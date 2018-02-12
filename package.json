@@ -1,0 +1,23 @@
+{
+  "name": "express-nodekb",
+  "version": "1.0.0",
+  "description": "Simple node kb",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rtw590/express-nodekb.git"
+  },
+  "author": "Rob Waller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rtw590/express-nodekb/issues"
+  },
+  "homepage": "https://github.com/rtw590/express-nodekb#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "pug": "^2.0.0-rc.4"
+  }
+}
