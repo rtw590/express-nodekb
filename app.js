@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 
 //Set up mongoose connection
 var mongoose = require('mongoose');
@@ -26,6 +27,10 @@ let Article = require('./models/article');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// Body Parser Middleware
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 // Home Route
 app.get('/', function(req, res){
     Article.find({}, function(err, articles){
@@ -48,6 +53,28 @@ app.get('/articles/add', function(req, res){
         title: 'Add Articles'
     });
 });
+
+// Add Submit POST route
+// Catches submitted items from add_article
+
+app.post('/articles/add', function(req, res){
+    // This is using our models
+    let article = new Article();
+    // This is using body parser
+    article.title = req.body.title 
+    article.author = req.body.author 
+    article.body = req.body.body 
+
+    article.save(function(err){
+        if(err){
+            console.log(err);
+            return;
+        } else {
+            res.redirect('/');
+        }
+    });
+});
+
 
 // Start Server
 app.listen(3000, function(){
