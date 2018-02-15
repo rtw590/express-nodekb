@@ -49,9 +49,19 @@ app.get('/', function(req, res){
     });
 });
 
+// Get Single Article
+    // :id is a placeholder and could be anything
+app.get('/article/:id', function(req, res){
+    Article.findById(req.params.id, function(err, article){
+        res.render('article', {
+            article: article
+        });
+    });
+});
+
 // Add Route
 app.get('/articles/add', function(req, res){
-    // add is the name of the view ie add.pug
+    // add_article is the name of the view ie add.pug
     res.render('add_article', {
         title: 'Add Articles'
     });
