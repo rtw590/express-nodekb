@@ -10,10 +10,15 @@ html
           a(href='/') Home
         li 
           a(href='/articles/add') Add Article
-        li 
-          a(href='/users/register') Register
-        li 
-          a(href='/users/login') Login
+    ul
+        if user
+          li 
+            a(href='/users/logout') Logout
+        else
+          li 
+            a(href='/users/register') Register
+          li 
+            a(href='/users/login') Login
     br
     .container
       != messages('message', locals)

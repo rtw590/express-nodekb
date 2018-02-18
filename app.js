@@ -4,10 +4,12 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
+const passport = require('passport');
+const config = require('./config/database');
 
 //Set up mongoose connection
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb://user1:password1@ds113826.mlab.com:13826/nodekb';
+var mongoDB = config.database;
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
@@ -72,6 +74,18 @@ app.use(expressValidator({
       };
     }
 }));
+
+// Passport config 
+require('./config/passport')(passport);
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// 
+app.get('*', function(req, res, next){
+    res.locals.user = req.user || null;
+    next();
+});
 
 // Home Route
 app.get('/', function(req, res){
