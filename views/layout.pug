@@ -8,8 +8,9 @@ html
     ul
         li 
           a(href='/') Home
-        li 
-          a(href='/articles/add') Add Article
+        if user
+          li 
+            a(href='/articles/add') Add Article
     ul
         if user
           li 
