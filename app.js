@@ -102,6 +102,11 @@ app.get('/', function(req, res){
     });
 });
 
+// Catan Route
+app.get('/catan', function(req, res){
+    res.sendfile(__dirname + '/remote-catan-player/index.html');
+  });
+
 // Route Files
 let articles = require('./routes/articles');
 let users = require('./routes/users');

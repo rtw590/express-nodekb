@@ -1,0 +1,38 @@
+h1, h2, h3, p, a, li, ul {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: rgb(61, 61, 61);
+}
+
+.application.theme--light {
+    background: rgb(39, 39, 39);
+    color: rgba(0,0,0,.87);
+}
+
+.card__actions {
+    width: 100%;
+}
+
+#addSubtractBox {
+    width: 95%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.card__title {
+    padding-bottom: 0px;
+}
+
+.purple {
+    color: white !important;
+}
+
+h2 {
+    color: white;
+}
+
+h4 {
+    color: white;
+}
