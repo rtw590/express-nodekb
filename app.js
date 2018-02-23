@@ -104,7 +104,7 @@ app.get('/', function(req, res){
 
 // Catan Route
 app.get('/catan', function(req, res){
-    res.sendfile(__dirname + '/remote-catan-player/index.html');
+    res.sendfile(__dirname + '/remote-catan-player2/index.html');
   });
 
 // Route Files
