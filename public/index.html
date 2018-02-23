@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+  <div id="vue-app">
+    <v-app>
+      <v-container grid-list-md text-xs-center>
+
+          <v-layout row wrap>
+              <v-flex>
+                  <v-btn block color="success" style="cursor: default">
+                    Victory Points: {{ victoryPoints }}
+                  </v-btn>
+              </v-flex>
+            </v-layout>
+
+
+
+        <v-layout row wrap>
+            <v-flex>
+                <v-btn block color="info" style="cursor: default">
+                  Settlements In Play: {{ settlements }}
+                </v-btn>
+            </v-flex>
+            <v-flex>
+                <v-btn block color="info" style="cursor: default">
+                  Cities In Play: {{ cities }}
+                </v-btn>
+            </v-flex>
+            <v-flex>
+                <v-btn block color="info" style="cursor: default">
+                  Roads In Play: {{ roads }}
+                </v-btn>
+            </v-flex>
+          </v-layout>
+
+          <v-layout row wrap>
+              <v-flex>
+                  <v-btn block color="purple" style="cursor: default">
+                    Settlements Remaining: {{ settlementsRemaining }}
+                  </v-btn>
+              </v-flex>
+              <v-flex>
+                  <v-btn block color="purple" style="cursor: default">
+                    Cities Remaining: {{ citiesRemaining }}
+                  </v-btn>
+              </v-flex>
+              <v-flex>
+                  <v-btn block color="purple" style="cursor: default">
+                    Roads Remaining: {{ roadsRemaining }}
+                  </v-btn>
+              </v-flex>
+            </v-layout>
+
+            <hr>
+            <br>
+            <hr>
+
+            <v-layout row wrap>
+              <v-flex>
+                  <h2>
+                    Buying Guide
+                  </h2>
+                  <h4>
+                      Roads: 1 Brick + 1 Wood || Settlements: 1 Brick + 1 Wood + 1 Wheat + 1 Sheep
+                      <br>
+                      Cities: 2 Wheat + 3 Ore || Development Cards: 1 Sheep + 1 Wheat + 1 Ore
+                  </h4>
+              </v-flex>
+              <v-flex>
+                  <v-btn block color="purple" v-on:click="diceRoll()">
+                      Roll Dice
+                  </v-btn>
+                  <h4>{{ diceResult }}</h4>
+              </v-flex>
+            </v-layout>
+
+        <v-layout row wrap>
+          <v-flex>
+              <v-btn block color="error" v-on:click="buildRoad(1)">
+                Build A Road
+              </v-btn>
+          </v-flex>
+          <v-flex>
+              <v-btn block color="success" v-on:click="buildSettlement(1)">
+                Build Settlement
+              </v-btn>
+          </v-flex>
+          <v-flex>
+              <v-btn block color="warning" v-on:click="buildCity(1)">
+                Build City
+              </v-btn>
+          </v-flex>
+          <v-flex>
+              <v-btn block color="info" v-on:click="buyDevelopmentCard()">
+                Buy Development Card
+              </v-btn>
+          </v-flex>
+        </v-layout>
+
+
+
+        <v-layout row wrap>
+          <v-flex>
+            <v-card>
+              <v-card-media src="images/wood.jpg" height="100px">
+              </v-card-media>
+              <v-card-title primary-title>
+                <div>
+                  <h3 class="headline mb-0">Wood: {{ wood }}</h3>
+                </div>
+              </v-card-title>
+              <v-card-actions>
+                <div id="addSubtractBox">
+                  <v-btn block color="success" v-on:click="addWood(1)">
+                      <div style="font-size:1em; color:white">
+                          <i class="fas fa-plus"></i>
+                      </div>
+                  </v-btn>
+                  <v-btn block color="error" v-on:click="subtractWood(1)">
+                      <div style="font-size:1em; color:white">
+                          <i class="fas fa-minus"></i>
+                      </div>
+                  </v-btn>
+                </div>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+
+
+          <v-flex>
+              <v-card>
+                <v-card-media src="images/brick.jpg" height="100px">
+                </v-card-media>
+                <v-card-title primary-title>
+                  <div>
+                    <h3 class="headline mb-0">Brick: {{ brick }}</h3>
+                  </div>
+                </v-card-title>
+                <v-card-actions>
+                  <div id="addSubtractBox">
+                    <v-btn block color="success" v-on:click="addBrick(1)">
+                        <div style="font-size:1em; color:white">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </v-btn>
+                    <v-btn block color="error" v-on:click="subtractBrick(1)">
+                        <div style="font-size:1em; color:white">
+                            <i class="fas fa-minus"></i>
+                        </div>
+                    </v-btn>
+                  </div>
+                </v-card-actions>
+              </v-card>
+            </v-flex>
+
+
+            <v-flex>
+                <v-card>
+                  <v-card-media src="images/sheep.jpg" height="100px">
+                  </v-card-media>
+                  <v-card-title primary-title>
+                    <div>
+                      <h3 class="headline mb-0">Sheep: {{ sheep }}</h3>
+                    </div>
+                  </v-card-title>
+                  <v-card-actions>
+                    <div id="addSubtractBox">
+                      <v-btn block color="success" v-on:click="addSheep(1)">
+                          <div style="font-size:1em; color:white">
+                              <i class="fas fa-plus"></i>
+                          </div>
+                      </v-btn>
+                      <v-btn block color="error" v-on:click="subtractSheep(1)">
+                          <div style="font-size:1em; color:white">
+                              <i class="fas fa-minus"></i>
+                          </div>
+                      </v-btn>
+                    </div>
+                  </v-card-actions>
+                </v-card>
+              </v-flex>
+
+              <v-flex>
+                  <v-card>
+                    <v-card-media src="images/wheat.jpg" height="100px">
+                    </v-card-media>
+                    <v-card-title primary-title>
+                      <div>
+                        <h3 class="headline mb-0">Wheat: {{ wheat }}</h3>
+                      </div>
+                    </v-card-title>
+                    <v-card-actions>
+                      <div id="addSubtractBox">
+                        <v-btn block color="success" v-on:click="addWheat(1)">
+                            <div style="font-size:1em; color:white">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </v-btn>
+                        <v-btn block color="error" v-on:click="subtractWheat(1)">
+                            <div style="font-size:1em; color:white">
+                                <i class="fas fa-minus"></i>
+                            </div>
+                        </v-btn>
+                      </div>
+                    </v-card-actions>
+                  </v-card>
+                </v-flex>
+
+                <v-flex>
+                    <v-card>
+                      <v-card-media src="images/ore.jpg" height="100px">
+                      </v-card-media>
+                      <v-card-title primary-title>
+                        <div>
+                          <h3 class="headline mb-0">Ore: {{ ore }}</h3>
+                        </div>
+                      </v-card-title>
+                      <v-card-actions>
+                        <div id="addSubtractBox">
+                          <v-btn block color="success" v-on:click="addOre(1)">
+                              <div style="font-size:1em; color:white">
+                                  <i class="fas fa-plus"></i>
+                              </div>
+                          </v-btn>
+                          <v-btn block color="error" v-on:click="subtractOre(1)">
+                              <div style="font-size:1em; color:white">
+                                  <i class="fas fa-minus"></i>
+                              </div>
+                          </v-btn>
+                        </div>
+                      </v-card-actions>
+                    </v-card>
+                  </v-flex>
+
+                </v-layout>
+
+                
+                <v-layout row wrap>
+                    <v-flex>
+                        <v-btn block v-bind:class="{success: longestRoad}" v-on:click="longestRoad = !longestRoad, longestRoadVP()">
+                          Longest Road: {{ longestRoad }}
+                        </v-btn>
+                    </v-flex>
+                    <v-flex>
+                        <v-btn block v-bind:class="{success: largestArmy}" v-on:click="largestArmy = !largestArmy, largestArmyVP()">
+                          Largest Army: {{ largestArmy }}
+                        </v-btn>
+                    </v-flex>
+                  </v-layout>
+
+                  <v-layout row wrap>
+                    <v-flex>
+                        <v-btn block color="purple" style="cursor: default">
+                          Knights Played: {{ knightsPlayed }}
+                        </v-btn>
+                    </v-flex>
+                  </v-layout>
+
+                  <v-layout row wrap>
+                    <v-flex>
+                      <v-card>
+                        <!-- <v-card-media src="images/wood.jpg" height="100px">
+                        </v-card-media> -->
+                        <v-card-title primary-title>
+                          <div>
+                            <h3 class="headline mb-0">Victory Points: {{ victoryPointCards }}</h3>
+                          </div>
+                        </v-card-title>
+                        <v-card-actions>
+                          <div id="addSubtractBox">
+                            <v-btn block color="success" v-on:click="addVictoryPointCards(1)">
+                                <div style="font-size:1em; color:white">
+                                    <i class="fas fa-plus"></i>
+                                </div>
+                            </v-btn>
+                            <v-btn block color="error" v-on:click="subtractVictoryPointCards(1)">
+                                <div style="font-size:1em; color:white">
+                                    <i class="fas fa-minus"></i>
+                                </div>
+                            </v-btn>
+                          </div>
+                        </v-card-actions>
+                      </v-card>
+                    </v-flex>
+          
+          
+                    <v-flex>
+                        <v-card>
+                          <!-- <v-card-media src="images/brick.jpg" height="100px">
+                          </v-card-media> -->
+                          <v-card-title primary-title>
+                            <div>
+                              <h3 class="headline mb-0">Knights: {{ knights }}</h3>
+                            </div>
+                          </v-card-title>
+                          <v-card-actions>
+                            <div id="addSubtractBox">
+                              <v-btn block color="success" v-on:click="addKnights(1)">
+                                  <div style="font-size:1em; color:white">
+                                      <i class="fas fa-plus"></i>
+                                  </div>
+                              </v-btn>
+                              <v-btn block color="error" v-on:click="subtractKnights(1)">
+                                  <div style="font-size:1em; color:white">
+                                      <i class="fas fa-minus"></i>
+                                  </div>
+                              </v-btn>
+                            </div>
+                          </v-card-actions>
+                        </v-card>
+                      </v-flex>
+          
+          
+                      <v-flex>
+                          <v-card>
+                            <!-- <v-card-media src="images/sheep.jpg" height="100px">
+                            </v-card-media> -->
+                            <v-card-title primary-title>
+                              <div>
+                                <h3 class="headline mb-0">Road Card: {{ roadBuildingCard }}</h3>
+                              </div>
+                            </v-card-title>
+                            <v-card-actions>
+                              <div id="addSubtractBox">
+                                <v-btn block color="success" v-on:click="addRoadBuildingCard(1)">
+                                    <div style="font-size:1em; color:white">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                </v-btn>
+                                <v-btn block color="error" v-on:click="subtractRoadBuildingCard(1)">
+                                    <div style="font-size:1em; color:white">
+                                        <i class="fas fa-minus"></i>
+                                    </div>
+                                </v-btn>
+                              </div>
+                            </v-card-actions>
+                          </v-card>
+                        </v-flex>
+          
+                        <v-flex>
+                            <v-card>
+                              <!-- <v-card-media src="images/wheat.jpg" height="100px">
+                              </v-card-media> -->
+                              <v-card-title primary-title>
+                                <div>
+                                  <h3 class="headline mb-0">Monopoly: {{ monopoly }}</h3>
+                                </div>
+                              </v-card-title>
+                              <v-card-actions>
+                                <div id="addSubtractBox">
+                                  <v-btn block color="success" v-on:click="addMonopoly(1)">
+                                      <div style="font-size:1em; color:white">
+                                          <i class="fas fa-plus"></i>
+                                      </div>
+                                  </v-btn>
+                                  <v-btn block color="error" v-on:click="subtractMonopoly(1)">
+                                      <div style="font-size:1em; color:white">
+                                          <i class="fas fa-minus"></i>
+                                      </div>
+                                  </v-btn>
+                                </div>
+                              </v-card-actions>
+                            </v-card>
+                          </v-flex>
+          
+                          <v-flex>
+                              <v-card>
+                                <v-card-title primary-title>
+                                  <div>
+                                    <h3 class="headline mb-0">Year of Plenty: {{ yearOfPlenty }}</h3>
+                                  </div>
+                                </v-card-title>
+                                <v-card-actions>
+                                  <div id="addSubtractBox">
+                                    <v-btn block color="success" v-on:click="addYearOfPlenty(1)">
+                                        <div style="font-size:1em; color:white">
+                                            <i class="fas fa-plus"></i>
+                                        </div>
+                                    </v-btn>
+                                    <v-btn block color="error" v-on:click="subtractYearOfPlenty(1)">
+                                        <div style="font-size:1em; color:white">
+                                            <i class="fas fa-minus"></i>
+                                        </div>
+                                    </v-btn>
+                                  </div>
+                                </v-card-actions>
+                              </v-card>
+                            </v-flex>
+          
+                          </v-layout>
+
+                          <v-layout row wrap>
+                              <v-flex>
+                                <v-text-field
+                                  dark
+                                  name="input-1"
+                                  label="Notes"
+                                  id="testing"
+                                ></v-text-field>
+                              </v-flex>
+                            </v-layout>
+      </v-container>
+    </v-app>
+  </div>
+ 
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
